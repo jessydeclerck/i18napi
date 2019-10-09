@@ -1,0 +1,8 @@
+spring:
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
