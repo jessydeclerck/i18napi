@@ -88,6 +88,7 @@ public class UpdateService {
         JsonFactory factory = new JsonFactory();
         try (JsonParser parser = factory.createParser(file.getInputStream())) {
             objectMapper.readValues(parser, NpcDto[].class).readAll().stream().flatMap(Stream::of).forEach(npcDto -> {
+                if (!itemRepository.existsById(npcDto.getNameId())) return;
                 Item item = itemRepository.findById(npcDto.getNameId()).get();
                 Npc npc = Npc.builder().npcId(npcDto.getId()).label(item.getLabel()).build();
                 log.info("Upsert npc {}", npc.getNpcId());
@@ -102,6 +103,7 @@ public class UpdateService {
         JsonFactory factory = new JsonFactory();
         try (JsonParser parser = factory.createParser(file.getInputStream())) {
             objectMapper.readValues(parser, PoiDto[].class).readAll().stream().flatMap(Stream::of).forEach(poiDto -> {
+                if (!itemRepository.existsById(poiDto.getNameId())) return;
                 Item item = itemRepository.findById(poiDto.getNameId()).get();
                 PointOfInterest poi = PointOfInterest.builder().poiId(poiDto.getId()).label(item.getLabel()).build();
                 log.info("Upsert poi {}", poi.getPoiId());
