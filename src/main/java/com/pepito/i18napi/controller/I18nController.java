@@ -2,11 +2,15 @@ package com.pepito.i18napi.controller;
 
 import com.pepito.i18napi.db.document.Item;
 import com.pepito.i18napi.db.document.MapPosition;
+import com.pepito.i18napi.db.document.Npc;
+import com.pepito.i18napi.db.document.PointOfInterest;
 import com.pepito.i18napi.db.repository.ItemRepository;
 import com.pepito.i18napi.db.repository.MapPositionRepository;
+import com.pepito.i18napi.db.repository.NpcRepository;
+import com.pepito.i18napi.db.repository.PointOfInterestRepository;
 import com.pepito.i18napi.service.UpdateService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,16 +24,14 @@ import java.util.concurrent.CompletableFuture;
 
 @Log4j2
 @Controller
+@RequiredArgsConstructor
 public class I18nController {
 
-    @Autowired
-    private UpdateService updateService;
-
-    @Autowired
-    private ItemRepository itemRepository;
-
-    @Autowired
-    private MapPositionRepository mapPositionRepository;
+    private final UpdateService updateService;
+    private final ItemRepository itemRepository;
+    private final MapPositionRepository mapPositionRepository;
+    private final NpcRepository npcRepository;
+    private final PointOfInterestRepository poiRepository;
 
     @GetMapping("/update")
     public String updatePage() {
@@ -54,8 +56,18 @@ public class I18nController {
     }
 
     @GetMapping("/mapposition/{id}")
-    public ResponseEntity<MapPosition> getMapPosition(@PathVariable Long id){
+    public ResponseEntity<MapPosition> getMapPosition(@PathVariable Long id) {
         return ResponseEntity.ok(mapPositionRepository.findById(id).orElseThrow());
+    }
+
+    @GetMapping("/npc/{id}")
+    public ResponseEntity<Npc> getNpc(@PathVariable Integer id) {
+        return ResponseEntity.ok(npcRepository.findById(id).orElseThrow());
+    }
+
+    @GetMapping("/poi/{id}")
+    public ResponseEntity<PointOfInterest> getPoi(@PathVariable Integer id) {
+        return ResponseEntity.ok(poiRepository.findById(id).orElseThrow());
     }
 
 }
