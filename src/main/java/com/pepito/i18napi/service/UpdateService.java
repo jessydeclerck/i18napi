@@ -90,6 +90,7 @@ public class UpdateService {
             objectMapper.readValues(parser, NpcDto[].class).readAll().stream().flatMap(Stream::of).forEach(npcDto -> {
                 Item item = itemRepository.findById(npcDto.getNameId()).get();
                 Npc npc = Npc.builder().npcId(npcDto.getId()).label(item.getLabel()).build();
+                log.info("Upsert npc {}", npc.getNpcId());
                 npcRepository.save(npc);
             });
         }
@@ -103,6 +104,7 @@ public class UpdateService {
             objectMapper.readValues(parser, PoiDto[].class).readAll().stream().flatMap(Stream::of).forEach(poiDto -> {
                 Item item = itemRepository.findById(poiDto.getNameId()).get();
                 PointOfInterest poi = PointOfInterest.builder().poiId(poiDto.getId()).label(item.getLabel()).build();
+                log.info("Upsert poi {}", poi.getPoiId());
                 poiRepository.save(poi);
             });
         }
